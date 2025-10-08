@@ -1,7 +1,5 @@
 /*
- * C
- *
- * Copyright 2014-2024 MicroEJ Corp. All rights reserved.
+ * Copyright 2014-2025 MicroEJ Corp. All rights reserved.
  * Use of this source code is governed by a BSD-style license that can be found with this software.
  */
 
@@ -14,21 +12,16 @@
 #include "../../../../framework/c/embunit/embUnit/config.h"
 /* Private constant declarations */
 
-
-
 /* private variable definitions */
 
 /* public function definitions */
 
-BSP_DECLARE_WEAK_FCNT void UTIL_TIME_BASE_initialize(void)
-{
+BSP_DECLARE_WEAK_FCNT void UTIL_TIME_BASE_initialize(void) {
 	stdimpl_print("[Warning]: No implementation of UTIL_TIME_BASE_initialize found!\n");
-}	
+}
 
-BSP_DECLARE_WEAK_FCNT int64_t UTIL_TIME_BASE_getTime(void)
-{
+BSP_DECLARE_WEAK_FCNT int64_t UTIL_TIME_BASE_getTime(void) {
 	return 0;
 }
 
 /** private function definitions */
-

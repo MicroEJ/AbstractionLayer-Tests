@@ -1,7 +1,5 @@
 /*
- * C
- * 
- * Copyright 2019-2021 MicroEJ Corp. All rights reserved.
+ * Copyright 2019-2025 MicroEJ Corp. All rights reserved.
  * Use of this source code is governed by a BSD-style license that can be found with this software.
  */
 
@@ -35,12 +33,11 @@
 /*
  * Prints a time like it: 8.51 ms (in debug mode only)
  */
-#define PRINT_TIME(time_us) (TEST_DBG("%.2f ms", ((float)(time_us)/1000)))
+#define PRINT_TIME(time_us) (TEST_DBG("%.2f ms", ((float)(time_us) / 1000)))
 
 /** private function definitions */
 
-static void flush_and_sync(uint32_t* buffer_address)
-{
+static void flush_and_sync(uint32_t *buffer_address) {
 	*buffer_address = LLDISPLAY_flush(*buffer_address, 0, 0, LLDISPLAY_getWidth() - 1, LLDISPLAY_getHeight() - 1);
 	LLDISPLAY_synchronize();
 }
@@ -49,8 +46,7 @@ static void flush_and_sync(uint32_t* buffer_address)
  * Retrieves the LCD framerate simulating some drawings during given time.
  * @return a time in us
  */
-static uint32_t get_framerate_time(uint32_t* buffer_address, uint32_t drawing_time_us)
-{
+static uint32_t get_framerate_time(uint32_t *buffer_address, uint32_t drawing_time_us) {
 	// We don't know when the first flush is performed when tearing signal is used.
 	// -> perform a flush/sync action on test startup to start the bench just after
 	// the end of first flush/sync
@@ -58,12 +54,13 @@ static uint32_t get_framerate_time(uint32_t* buffer_address, uint32_t drawing_ti
 
 	uint32_t time_counter = 0;
 
-	for(int i = 0; i < NB_LOOPS; i++)
-	{
+	for (int i = 0; i < NB_LOOPS; i++) {
 		uint64_t t0 = UTIL_TIME_BASE_getTime();
 		{
 			// simulate the time to perform some drawings
-			while(UTIL_TIME_BASE_getTime() - t0 < drawing_time_us);
+			while (UTIL_TIME_BASE_getTime() - t0 < drawing_time_us) {
+				;
+			}
 
 			// ask a flush and wait its end
 			flush_and_sync(buffer_address);
@@ -79,12 +76,11 @@ static uint32_t get_framerate_time(uint32_t* buffer_address, uint32_t drawing_ti
 /*
  * Adjusts the time to perform some drawings. This time must not change the expected LCD framerate.
  */
-static uint32_t adjust_drawing_time(uint32_t drawing_time_us, uint32_t drawing_time_step_us, uint32_t framerate_time_us_ref, uint32_t* buffer_address)
-{
+static uint32_t adjust_drawing_time(uint32_t drawing_time_us, uint32_t drawing_time_step_us,
+                                    uint32_t framerate_time_us_ref, uint32_t *buffer_address) {
 	uint32_t framerate_with_drawing = framerate_time_us_ref;
 
-	while(framerate_with_drawing < framerate_time_us_ref + TIME_TOLERANCE_US)
-	{
+	while (framerate_with_drawing < framerate_time_us_ref + TIME_TOLERANCE_US) {
 		drawing_time_us += drawing_time_step_us;
 		framerate_with_drawing = get_framerate_time(buffer_address, drawing_time_us);
 
@@ -100,8 +96,7 @@ static uint32_t adjust_drawing_time(uint32_t drawing_time_us, uint32_t drawing_t
 
 /* public function definitions */
 
-void X_UI_FRAMERATE_get(uint32_t buffer_address, uint32_t* framerate_time_us, uint32_t* flush_copy_time_us)
-{
+void X_UI_FRAMERATE_get(uint32_t buffer_address, uint32_t *framerate_time_us, uint32_t *flush_copy_time_us) {
 	// retrieve the LCD minimal framerate time
 	UTIL_print_string("Retrieve the LCD framerate...\n");
 	*framerate_time_us = get_framerate_time(&buffer_address, 0);
@@ -112,9 +107,9 @@ void X_UI_FRAMERATE_get(uint32_t buffer_address, uint32_t* framerate_time_us, ui
 	// retrieve maximum time to perform some drawings without changing LCD minimal framerate time
 	UTIL_print_string("Retrieve the maximal drawing time (this will take several seconds)...\n");
 	uint32_t drawing_time_us = 0;
-	for(uint32_t drawing_time_step_us = 1000; drawing_time_step_us >= 10; drawing_time_step_us /= 10)
-	{
-		drawing_time_us = adjust_drawing_time(drawing_time_us, drawing_time_step_us, *framerate_time_us, &buffer_address);
+	for (uint32_t drawing_time_step_us = 1000; drawing_time_step_us >= 10; drawing_time_step_us /= 10) {
+		drawing_time_us = adjust_drawing_time(drawing_time_us, drawing_time_step_us, *framerate_time_us,
+		                                      &buffer_address);
 	}
 
 	*flush_copy_time_us = *framerate_time_us - drawing_time_us;

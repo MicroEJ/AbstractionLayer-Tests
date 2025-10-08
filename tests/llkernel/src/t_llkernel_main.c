@@ -14,7 +14,7 @@
 #define LLKERNEL_VERSION "v1.2.0"
 
 void T_LLKERNEL_main(void) {
-    UTIL_print_string("\nT_LLKERNEL " LLKERNEL_VERSION "\n");
+	UTIL_print_string("\nT_LLKERNEL " LLKERNEL_VERSION "\n");
 	TestRunner_start();
 	TestRunner_runTest(T_LLKERNEL_tests());
 	TestRunner_end();

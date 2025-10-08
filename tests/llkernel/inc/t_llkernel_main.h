@@ -1,7 +1,5 @@
 /*
- * C
- *
- * Copyright 2023 MicroEJ Corp. All rights reserved.
+ * Copyright 2023-2025 MicroEJ Corp. All rights reserved.
  * Use of this source code is governed by a BSD-style license that can be found with this software.
  */
 
@@ -11,7 +9,7 @@
 #define __T_LLKERNEL_MAIN_H
 
 #ifdef __cplusplus
- extern "C" {
+extern "C" {
 #endif
 
 /* public function declaration */

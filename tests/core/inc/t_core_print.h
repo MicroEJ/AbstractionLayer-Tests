@@ -1,20 +1,20 @@
 /*
  * C
  *
- * Copyright 2019-2024 MicroEJ Corp. All rights reserved.
+ * Copyright 2019-2025 MicroEJ Corp. All rights reserved.
  * Use of this source code is governed by a BSD-style license that can be found with this software.
  */
- 
+
 /* Prevent recursive inclusion */
 
 #ifndef __T_CORE_PRINT_H
 #define __T_CORE_PRINT_H
 
 #ifdef __cplusplus
- extern "C" {
+extern "C" {
 #endif
 
-#include "../../../../framework/c/embunit/embUnit/embUnit.h"
+#include "embUnit.h"
 
 /* Public function declarations */
 /**

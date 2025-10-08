@@ -1,7 +1,7 @@
 /*
  * C
  *
- * Copyright 2014-2020 MicroEJ Corp. All rights reserved.
+ * Copyright 2014-2025 MicroEJ Corp. All rights reserved.
  * Use of this source code is governed by a BSD-style license that can be found with this software.
  */
 
@@ -11,19 +11,14 @@
 #include "x_core_benchmark.h"
 #include "bsp_util.h"
 
-
 /** public weak function default definitions */
 
-
 /**
- * @brief 
+ * @brief
  *
- * @return 
+ * @return
  */
 
-BSP_DECLARE_WEAK_FCNT bool X_CORE_BENCHMARK_run(void)
-{
+BSP_DECLARE_WEAK_FCNT bool X_CORE_BENCHMARK_run(void) {
 	return false;
 }
-
-

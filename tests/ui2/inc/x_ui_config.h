@@ -1,7 +1,5 @@
 /*
- * C
- *
- * Copyright 2019-2024 MicroEJ Corp. All rights reserved.
+ * Copyright 2019-2025 MicroEJ Corp. All rights reserved.
  * Use of this source code is governed by a BSD-style license that can be found with this software.
  */
 
@@ -13,7 +11,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-  
+
 #include <stdint.h>
 
 #define UI_LCD_BPP_ARGB8888 32

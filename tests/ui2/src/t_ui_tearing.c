@@ -1,7 +1,5 @@
 /*
- * C
- *
- * Copyright 2019-2021 MicroEJ Corp. All rights reserved.
+ * Copyright 2019-2025 MicroEJ Corp. All rights reserved.
  * Use of this source code is governed by a BSD-style license that can be found with this software.
  */
 #include <stdio.h>
@@ -21,23 +19,18 @@
  */
 #define TEARING_TIME_SECOND 10
 
-static void T_UI_FRAMERATE_setUp(void)
-{
+static void T_UI_FRAMERATE_setUp(void) {
 	UTIL_print_initialize();
 	UTIL_TIME_BASE_initialize();
 	T_UI_LCD_initialize();
 }
 
-static void T_UI_FRAMERATE_tearDown(void)
-{
-
+static void T_UI_FRAMERATE_tearDown(void) {
 }
 
-static void T_UI_TEARING_showTearing(void)
-{
+static void T_UI_TEARING_showTearing(void) {
 	uint32_t bpp = UI_CONFIG_getBPP();
-	if (bpp == 0)
-	{
+	if (bpp == 0) {
 		UTIL_print_string("Tearing test requires an implementation of UI_CONFIG_getBPP() function. Test cannot run.");
 		return;
 	}
@@ -48,28 +41,25 @@ static void T_UI_TEARING_showTearing(void)
 
 	UTIL_print_string("Refresh LCD content with black and screen data. Ensures about tearing effect.");
 
-	while(UTIL_TIME_BASE_getTime() - t0 < TEARING_TIME_SECOND * 1000000)
-	{
+	while (UTIL_TIME_BASE_getTime() - t0 < TEARING_TIME_SECOND * 1000000) {
 		// fill buffer with '0' (often means black) and flush it
-		memset((void*)buffer_address, 0, size);
+		memset((void *)buffer_address, 0, size);
 		buffer_address = LLDISPLAY_flush(buffer_address, 0, 0, LLDISPLAY_getWidth() - 1, LLDISPLAY_getHeight() - 1);
 		LLDISPLAY_synchronize();
 
 		// fill buffer with '1' (often means white) and flush it
-		memset((void*)buffer_address, 0xff, size);
+		memset((void *)buffer_address, 0xff, size);
 		buffer_address = LLDISPLAY_flush(buffer_address, 0, 0, LLDISPLAY_getWidth() - 1, LLDISPLAY_getHeight() - 1);
 		LLDISPLAY_synchronize();
 	}
 }
 
-TestRef T_UI_TEARING_tests(void)
-{
-	EMB_UNIT_TESTFIXTURES(fixtures)
-	{
+TestRef T_UI_TEARING_tests(void) {
+	EMB_UNIT_TESTFIXTURES(fixtures) {
 		new_TestFixture("Tearing", T_UI_TEARING_showTearing),
 	};
 
 	EMB_UNIT_TESTCALLER(framerateTest, "Framerate_tests", T_UI_FRAMERATE_setUp, T_UI_FRAMERATE_tearDown, fixtures);
 
-	return (TestRef)&framerateTest;
+	return (TestRef) & framerateTest;
 }

@@ -1,5 +1,5 @@
 .. ReStructuredText
-.. Copyright 2019-2024 MicroEJ Corp.  MicroEJ Corp. All rights reserved.
+.. Copyright 2019-2025 MicroEJ Corp.  MicroEJ Corp. All rights reserved.
 .. Use of this source code is governed by a BSD-style license that can be found with this software.
 
 **********************
@@ -100,7 +100,7 @@ Expected Results
    **                      Platform Qualification Core                       **
    **                              version 1.0                               **
    ****************************************************************************
-   *           Copyright 2013-2020 MicroEJ Corp. All rights reserved.         *
+   *           Copyright 2013-2025 MicroEJ Corp. All rights reserved.         *
    * Use of this source code is governed by a BSD-style license               *
    * that can be found with this software.                                    *
    ****************************************************************************
@@ -113,9 +113,10 @@ Expected Results
    RAM tests:
    .....................
    RAM speed benchmark:
-   .RAM speed average read access (according to your configuration file 8/16/32 bits) : 51.180522MBytes/s
-   .RAM speed average write access (according to your configuration file 8/16/32 bits) : 131.289164 MBytes/s
-   .RAM speed average transfert access (according to your configuration file 8/16/32 bits) : 86.466471MBytes/s
+   .RAM speed average read access for 32 bit: 172.000000MB/s 
+   .RAM speed average write access for 32 bit: 172.000000 MB/s 
+   .RAM speed average transfert access for 32 bit: 129.000000MB/s 
+
 
    Core/Flash benchmark:
    .2K performance run parameters for coremark.
@@ -383,14 +384,19 @@ To run, several functions must be implemented. See ``x_ram_checks.h``:
 These *sources* can target a region in internal flash, internal RAM or
 any other regions.
 
+
+By default, the RAM speed is computed on 32 bit accesses only.
+
+Other accesses can be enabled and combined in: [x_ram_speed.h](inc/x_ram_speed.h).
+
 **Expected results**
 
 ::
 
    RAM speed benchmark:
-   .RAM speed average read access (according to your configuration file 8/16/32 bits) : 51.180522MBytes/s
-   .RAM speed average write access (according to your configuration file 8/16/32 bits) : 131.289164 MBytes/s
-   .RAM speed average transfert access (according to your configuration file 8/16/32 bits) : 86.466471MBytes/s
+   .RAM speed average read access for 32 bit: 172.000000MB/s 
+   .RAM speed average write access for 32 bit: 172.000000 MB/s 
+   .RAM speed average transfert access for 32 bit: 129.000000MB/s 
 
 **Notes**
 
@@ -436,6 +442,59 @@ To run this test:
    Correct operation validated. See readme.txt for run and reporting rules.
    CoreMark 1.0 : 497.815544 / ARMCC V5.06 update 4 (build 422) -c --cpu Cortex-M4.fp -D__MICROLIB -g -O3 -Otime --apcs=interwork --split_sections -D__UVISION_VERSION="523" -D_RTE_ -DSTM32L496xx -DUSE_HAL_DRIVER -DSTM32L496xx / STATIC
 
+
+
+Runtime Mock Tests
+------------------
+
+This set of tests need to replace the `microejruntime.a` library by using a code that mimics a VEE execution. 
+These additional tests are there to test the behavior of the Core Engine abstraction layer implementation.
+
+`async_wakeup_vm` is a utility component that allows to call `LLMJVM_IMPL_wakeupVM()` asynchronously after a specified timeout.
+Its implementation uses an active polling to limit the dependencies on OSAL and avoid issues caused by an OSAL bug.
+
+**Requirements**
+
+This set of tests requires to have OSAL integrated in your VEE Port.
+
+**Configuration**
+
+#. Remove `microejruntime.a` and `microejapp.o` from your BSP project (link).
+#. Add the `async_wakeup_vm.c` and `microejruntime_mock.c` files in `tests/core/c/src/`
+   of your BSP project (should have been added during the Quick Start setup).
+#. Add the `async_wakeup_vm.h` and `microejruntime_mock.h` files in `tests/core/c/inc/`
+   of your BSP project (should have been added during the Quick Start setup).
+#. Add in `veeport_configuration.h` the macro `MICROEJ_CORE_VEE_MOCK_VALIDATION` and set it to 1.
+#. [Optional] Edit the definition of the macro `mock_printf` in `microejruntime_mock.c` that targets `UTIL_printf` in `u_print.h` if needed
+#. [Optional] If the Event-Queue Pack has been integrated, stub the function `SNI_resumeJavaThread` in the VEE Port.
+#. [Optional] If the UI Pack has been integrated, stub the following functions if `event_generator.c` in the VEE Port:
+
+   - `LLUI_INPUT_sendButtonPressedEvent`
+   - `LLUI_INPUT_sendButtonRepeatedEvent`
+   - `LLUI_INPUT_sendButtonReleasedEvent`
+   - `LLUI_INPUT_sendTouchReleasedEvent`
+   - `LLUI_INPUT_sendTouchPressedEvent`
+   - `LLUI_INPUT_sendTouchMovedEvent`
+#. [Optional] If the Core Engine Monitoring is enabled,  stub the function `MJVM_MONITOR_get_threads_ids` and `MJVM_MONITOR_get_thread_info` in the VEE Port.
+#. [Optional] Wrap each function stub aforementioned to enable them only if `MICROEJ_CORE_VEE_MOCK_VALIDATION` is set to 1.
+#. Build the executable (`build.bat/sh`) and run it (`run.bat/sh`)
+
+
+**Expected results**
+
+::
+
+   MicroEJ START
+   SNI_startVM
+   test_idle
+   test_schedule_request
+   test_ackWakeup
+   test_ackWakeup_cancel_schedule_request
+   test_timer_schedule_request_after_ackWakeup_cancel
+   MicroEJ END (exit code = 0)
+   Tests PASSED
+
+
 MicroEJ Core Validation
 -----------------------
 
@@ -451,5 +510,8 @@ Follow the MicroEJ Core Validation `README <./java-testsuite-runner-core/README.
 
 No error must be thrown when executing this test. A typical execution trace is described in the MicroEJ Core Validation `README <./java-testsuite-runner-core/README.rst>`_
 (the visible clock accuracy must be compared manually with an external clock).
+
+
+
 
 

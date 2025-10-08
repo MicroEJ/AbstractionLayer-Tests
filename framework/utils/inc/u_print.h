@@ -1,31 +1,65 @@
 /*
- * C
- *
- * Copyright 2019-2020 MicroEJ Corp. All rights reserved.
+ * Copyright 2019-2025 MicroEJ Corp. All rights reserved.
  * Use of this source code is governed by a BSD-style license that can be found with this software.
  */
 
 /* Prevent recursive inclusion */
 
-#ifndef __UTIL_PRINT_H
-#define __UTIL_PRINT_H
+#ifndef UTIL_PRINT_H
+#define UTIL_PRINT_H
 
 #ifdef __cplusplus
- extern "C" {
+extern "C" {
 #endif
+
+// -----------------------------------------------------------------------------
+// Includes
+// -----------------------------------------------------------------------------
+
+// Include VEE Port User configuration file
+#if defined __has_include
+	#if __has_include("veeport_configuration.h")
+		#include "veeport_configuration.h"
+	#endif // __has_include("veeport_configuration.h")
+#else
+// Ensure 'veeport_configuration.h' exists in your project for custom configurations.
+	#include "veeport_configuration.h"
+#endif // defined __has_include
 
 #include <stdint.h>
 
-/* Public constant declaration */
+// -----------------------------------------------------------------------------
+// Public Macros and Defines
+// -----------------------------------------------------------------------------
 
-/* public structure declaration */
+/**
+ * @brief Print function redirection macro to allow the test developers to use
+ * the printf function or equivalent.
+ *
+ * Redefine this macro in veeport_configuration.h to target the desired print function if necessary.
+ */
+#ifndef UTIL_printf
+#define UTIL_printf printf
+#endif
 
-/* public function declaration */
-// weak function to implement
-/** 
+// -----------------------------------------------------------------------------
+// Public constant declaration
+// -----------------------------------------------------------------------------
+
+// -----------------------------------------------------------------------------
+// Public structure declaration
+// -----------------------------------------------------------------------------
+
+// -----------------------------------------------------------------------------
+// Public function declaration
+// -----------------------------------------------------------------------------
+
+// weak functions to implement
+/**
  * @fn void UTIL_print_initialize(void)
- * @brief This function is called before the tests which need to display some results. It can be used to initialize the hardware in charge of the display (serial line, screen,...).
- * 
+ * @brief This function is called before the tests which need to display some results. It can be used to initialize the
+ * hardware in charge of the display (serial line, screen,...).
+ *
  * @fn void UTIL_print_string(const char* string)
  * @brief  this function is called by test functions to display a string.
  * @param[in] const char* string  - the string to display.
@@ -43,7 +77,7 @@
  * @param[in] long long value - the 64-bit integer value to display.
  */
 void UTIL_print_initialize(void);
-void UTIL_print_string(const char* string);
+void UTIL_print_string(const char *string);
 void UTIL_print_integer(int integer);
 void UTIL_print_float(double value);
 void UTIL_print_longlong(long long value);
@@ -52,4 +86,8 @@ void UTIL_print_longlong(long long value);
 }
 #endif
 
-#endif
+#endif // UTIL_PRINT_H
+
+// -----------------------------------------------------------------------------
+// End
+// -----------------------------------------------------------------------------

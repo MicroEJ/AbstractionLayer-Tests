@@ -1,7 +1,5 @@
 /*
- * C
- *
- * Copyright 2019-2021 MicroEJ Corp. All rights reserved.
+ * Copyright 2019-2025 MicroEJ Corp. All rights reserved.
  * Use of this source code is governed by a BSD-style license that can be found with this software.
  */
 #include <stdio.h>
@@ -15,8 +13,7 @@
 
 static bool lcd_initialized = false;
 
-void T_UI_main(void)
-{
+void T_UI_main(void) {
 	TestRunner_start();
 	TestRunner_runTest(T_UI_API_tests());
 	TestRunner_runTest(T_UI_TEARING_tests());
@@ -25,10 +22,8 @@ void T_UI_main(void)
 	return;
 }
 
-void T_UI_LCD_initialize()
-{
-	if (!lcd_initialized)
-	{
+void T_UI_LCD_initialize() {
+	if (!lcd_initialized) {
 		// this call should be executed only once
 		LLDISPLAY_initialize();
 		lcd_initialized = true;

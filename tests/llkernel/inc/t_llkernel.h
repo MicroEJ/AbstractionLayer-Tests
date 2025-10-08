@@ -10,7 +10,7 @@
 #include "embUnit.h"
 
 #ifdef __cplusplus
- extern "C" {
+extern "C" {
 #endif
 
 /**
@@ -18,7 +18,7 @@
  */
 void T_LLKERNEL_main(void);
 
-TestRef	T_LLKERNEL_tests(void);
+TestRef T_LLKERNEL_tests(void);
 
 #ifdef __cplusplus
 }
