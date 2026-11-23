@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.0] - 2026-11-20
+
+### Added
+
+- Add LLEXT_RES_CACHE Test Suite.
+
+### Fixed
+
+- Fix the IAR warning on the optimization attribute of the Core time base test.
+
 ## [1.2.0] - 2025-10-08
 
 ### Added
@@ -44,5 +54,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Initial revision.
 
 ---
-_Copyright 2024-2025 MicroEJ Corp. All rights reserved._
-_Use of this source code is governed by a BSD-style license that can be found with this software._  
+_Copyright 2024-2026 MicroEJ Corp. All rights reserved._
+_Use of this source code is governed by a BSD-style license that can be found with this software._
+_Build: 7E4D1F7C_  

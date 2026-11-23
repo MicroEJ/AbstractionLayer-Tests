@@ -1,2 +1,7 @@
 ### Git hooks ###
 .pre-commit-config.yaml
+
+### Gradle ###
+.gradle/
+build/
+.metadata/*.o

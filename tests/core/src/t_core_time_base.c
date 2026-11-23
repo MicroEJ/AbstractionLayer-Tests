@@ -1,8 +1,9 @@
 /*
  * C
  *
- * Copyright 2015-2025 MicroEJ Corp. All rights reserved.
+ * Copyright 2015-2026 MicroEJ Corp. All rights reserved.
  * Use of this source code is governed by a BSD-style license that can be found with this software.
+ * Build: 7E4D1F7C
  */
 #include "embUnit.h"
 #include "config.h"
@@ -17,7 +18,12 @@ static void T_CORE_TIME_BASE_setUp(void) {
 static void T_CORE_TIME_BASE_tearDown(void) {
 }
 
-__attribute__((optimize("O0"))) // Do not optimize the loop to avoid the test to fail.
+// Do not optimize the loop to avoid the test to fail.
+#if defined(__GNUC__)
+__attribute__((optimize("O0")))
+#elif defined(__ICCARM__)
+#pragma optimize = none
+#endif
 static void T_CORE_TIME_BASE_check_time_evolution(void) {
 	int64_t startTime = UTIL_TIME_BASE_getTime();
 	for (int32_t i = 0; i < T_CORE_TIME_BASE_MAX_WAITING; i++) {
